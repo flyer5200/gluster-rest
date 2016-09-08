@@ -1,7 +1,7 @@
 package main
 
 import (
-	"code.google.com/p/gorest"
+	"github.com/flyer5200/gorest"
 	"net/http"
 	"os/exec"
         "fmt"
