@@ -1,10 +1,11 @@
 package main
-
 import (
 	"github.com/flyer5200/gorest"
+	xml2json "github.com/samuelhug/goxml2json"
 	"net/http"
 	"os/exec"
         "fmt"
+	"strings"
 )
 
 type GlusterService struct {
@@ -23,7 +24,13 @@ func (serv GlusterService) Gluster(vars ...string) string {
         if err != nil {
                 return err.Error()
         }
-	return string(output)
+	xml := strings.NewReader(string(output))
+	json, err := xml2json.Convert(xml)
+	if err != nil {
+		panic("That's embarrassing...")
+	}
+	fmt.Println(json.String())
+	return json.String()
 }
 
 func main() {
