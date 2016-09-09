@@ -4,8 +4,8 @@ import (
 	xml2json "github.com/samuelhug/goxml2json"
 	"net/http"
 	"os/exec"
-        "fmt"
 	"strings"
+	"log"
 )
 
 type GlusterService struct {
@@ -19,7 +19,7 @@ func (serv GlusterService) Gluster(vars ...string) string {
 	}
         args := append(vars, "--xml")
         gCmd := exec.Command("gluster", args...)
-        fmt.Print(vars, args, gCmd.Path, gCmd.Args)
+        log.Println(vars, args, gCmd.Path, gCmd.Args)
 	output, err := gCmd.CombinedOutput()
         if err != nil {
                 return err.Error()
@@ -27,9 +27,8 @@ func (serv GlusterService) Gluster(vars ...string) string {
 	xml := strings.NewReader(string(output))
 	json, err := xml2json.Convert(xml)
 	if err != nil {
-		panic("That's embarrassing...")
+		panic(err.Error())
 	}
-	fmt.Println(json.String())
 	return json.String()
 }
 
